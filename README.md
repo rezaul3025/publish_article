@@ -1,5 +1,5 @@
 # publish_article
-============================================
+
 Java version: 1.8
 Memory database: H2
 Build tool : Maven
