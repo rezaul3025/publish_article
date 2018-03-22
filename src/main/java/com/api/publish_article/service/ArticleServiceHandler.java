@@ -82,7 +82,7 @@ public class ArticleServiceHandler implements ArticleService{
   @Override
   public List<Article> findBetweenDates(String start, String end) {
     LocalDateTime startDate = formatDate(start);
-    LocalDateTime endDate = formatDate(start);
+    LocalDateTime endDate = formatDate(end);
     List<Article> articles = articleRepo.findByPublishDateBetween(startDate, endDate);
     return articles;
   }
