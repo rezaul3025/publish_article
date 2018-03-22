@@ -1,0 +1,1 @@
+INSERT INTO article(id, header, description, text, publish_date, author, keywords) VALUES(1, 'test', 'test desc','test text','2018-04-23 00.00.00','test author', 'test keywords');
