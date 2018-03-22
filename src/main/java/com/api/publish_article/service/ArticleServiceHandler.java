@@ -1,21 +1,16 @@
-/*******************************************************************************
- * (c) Copyright 1997-2015, CENTOGENE AG
- *
- *  All rights reserved. This work contains unpublished proprietary information
- *  of CENTOGENE AG and is copy protected by law. It may not
- *  be disclosed to third parties or copied or duplicated in any form, in whole
- *  or in part, without the specific written permission of CENTOGENE AG.
- *  
- *******************************************************************************/
+
 package com.api.publish_article.service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.api.publish_article.domain.Article;
 import com.api.publish_article.event.ArticleEvent;
+import com.api.publish_article.repo.ArticleRepository;
 
 /**
  * @author rkarim
@@ -23,14 +18,22 @@ import com.api.publish_article.event.ArticleEvent;
  */
 @Service
 public class ArticleServiceHandler implements ArticleService{
+  
+  @Autowired
+  private ArticleRepository articleRepo;
 
   /* (non-Javadoc)
    * @see com.api.publish_article.service.ArticleService#create(com.api.publish_article.event.ArticleEvent)
    */
   @Override
   public Integer create(ArticleEvent data) {
-    // TODO Auto-generated method stub
-    return null;
+    
+    Article article =new Article(data.getHeader(), data.getDescription(), data.getText(),
+                                data.getPublishDate(),data.getAuthor(), data.getKeywords());
+    
+    articleRepo.save(article);
+    
+    return article.getId();
   }
 
   /* (non-Javadoc)
@@ -38,17 +41,22 @@ public class ArticleServiceHandler implements ArticleService{
    */
   @Override
   public Integer update(Integer id, ArticleEvent data) {
-    // TODO Auto-generated method stub
-    return null;
+    Article article =new Article(data.getHeader(), data.getDescription(), data.getText(),
+        data.getPublishDate(),data.getAuthor(), data.getKeywords());
+    article.setId(id);
+    articleRepo.save(article);
+    
+    return article.getId();
   }
 
   /* (non-Javadoc)
    * @see com.api.publish_article.service.ArticleService#delete(java.lang.Integer)
    */
   @Override
-  public void delete(Integer id) {
-    // TODO Auto-generated method stub
+  public Integer delete(Integer id) {
+    articleRepo.deleteById(id);
     
+    return 0;
   }
 
   /* (non-Javadoc)
@@ -56,8 +64,8 @@ public class ArticleServiceHandler implements ArticleService{
    */
   @Override
   public List<Article> findByAuthor(String name) {
-    // TODO Auto-generated method stub
-    return null;
+    List<Article> articles = articleRepo.findByAuthor(name);
+    return articles;
   }
 
   /* (non-Javadoc)
@@ -65,17 +73,28 @@ public class ArticleServiceHandler implements ArticleService{
    */
   @Override
   public Article findOne(Integer id) {
-    // TODO Auto-generated method stub
-    return null;
+    return articleRepo.getOne(id);
   }
 
   /* (non-Javadoc)
    * @see com.api.publish_article.service.ArticleService#findBetweenDates(java.time.LocalDateTime, java.time.LocalDateTime)
    */
   @Override
-  public List<Article> findBetweenDates(LocalDateTime start, LocalDateTime end) {
-    // TODO Auto-generated method stub
-    return null;
+  public List<Article> findBetweenDates(String start, String end) {
+    LocalDateTime startDate = formatDate(start);
+    LocalDateTime endDate = formatDate(start);
+    List<Article> articles = articleRepo.findByPublishDateBetween(startDate, endDate);
+    return articles;
+  }
+
+  /**
+   * 
+   */
+  private LocalDateTime formatDate(String dateStr) {
+    
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    LocalDateTime dateTime = LocalDateTime.parse(dateStr, formatter);
+    return dateTime;
   }
 
   /* (non-Javadoc)
@@ -83,8 +102,8 @@ public class ArticleServiceHandler implements ArticleService{
    */
   @Override
   public List<Article> findByKeyWords(String keywords) {
-    // TODO Auto-generated method stub
-    return null;
+    List<Article> articles = articleRepo.findByKeywordsIn(keywords);
+    return articles;
   }
 
 }
