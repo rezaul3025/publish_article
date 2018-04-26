@@ -1,6 +1,7 @@
 
 package com.api.publish_article.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -28,6 +29,9 @@ public class ArticleServiceHandler implements ArticleService{
   @Override
   public Integer create(ArticleEvent data) {
     
+	if(data.getPublishDate() == null) {
+		data.setPublishDate(LocalDateTime.now());
+	}
     Article article =new Article(data.getHeader(), data.getDescription(), data.getText(),
                                 data.getPublishDate(),data.getAuthor(), data.getKeywords());
     
@@ -105,5 +109,11 @@ public class ArticleServiceHandler implements ArticleService{
     List<Article> articles = articleRepo.findByKeywordsIn(keywords);
     return articles;
   }
+
+	@Override
+	public List<Article> findAll() {
+		// TODO Auto-generated method stub
+		return articleRepo.findAll();
+	}
 
 }

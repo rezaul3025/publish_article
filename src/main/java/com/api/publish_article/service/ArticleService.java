@@ -24,4 +24,6 @@ public interface ArticleService {
   List<Article> findBetweenDates(String start, String end);
 
   List<Article> findByKeyWords(String keywords);
+  
+  List<Article> findAll();
 }
