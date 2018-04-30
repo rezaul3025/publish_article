@@ -3,7 +3,7 @@
 Java version: 1.8 \
 Memory database: H2 \
 Build tool : Maven \
-Packaging : WAR \
+Packaging : WAR 
 
 Spring components:
 Boot, Data, Rest, Thymeleaf
