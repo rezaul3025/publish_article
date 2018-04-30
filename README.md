@@ -1,9 +1,9 @@
 # publish_article
 
-Java version: 1.8_
-Memory database: H2 _
-Build tool : Maven _
-Packaging : WAR _
+Java version: 1.8 <br/>
+Memory database: H2 <br/>
+Build tool : Maven <br/>
+Packaging : WAR <br/>
 
 Spring components:
 Boot, Data, Rest, Thymeleaf
